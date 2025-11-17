@@ -1,0 +1,7 @@
+TCC log
+
+-Instalações
+	#apk add python3 py3-pip py3-setuptools py3-wheel libpcap libpcap-dev bind-tools git openssh
+-Instala o Scapy
+	#pip install scapy --break-system-packages
+
