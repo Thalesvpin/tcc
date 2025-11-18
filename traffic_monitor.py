@@ -87,15 +87,18 @@ class TrafficMonitor:
                 line = process.stdout.readline()
                 if not line:
                     break
-                
                 try:
                     packet_data = json.loads(line)
-                    self.analyze_packet(packet_data)
+                    # If packet_data is a list, process each item
+                    if isinstance(packet_data, list):
+                        for pkt in packet_data:
+                            self.analyze_packet(pkt)
+                    else:
+                        self.analyze_packet(packet_data)
                 except json.JSONDecodeError:
                     continue
                 except Exception as e:
                     print(f"Error processing packet: {e}")
-                
         except KeyboardInterrupt:
             print("\nStopping traffic monitoring...")
         finally:
