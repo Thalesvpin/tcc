@@ -32,7 +32,11 @@ class TrafficMonitor:
                 stderr=subprocess.PIPE,
                 universal_newlines=True
             )
-            
+            time.sleep(1)  # Give tshark a moment to start
+            if process.poll() is not None:
+                err = process.stderr.read()
+                print(f"tshark failed to start. Error output:\n{err}")
+                return None
             print(f"Started capturing traffic on interface {interface}")
             return process
         except Exception as e:
@@ -79,6 +83,7 @@ class TrafficMonitor:
         """Main monitoring loop"""
         process = self.start_capture()
         if not process:
+            print("Failed to start tshark process. Exiting monitor.")
             return
         
         try:
